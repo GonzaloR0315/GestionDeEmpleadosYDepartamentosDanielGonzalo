@@ -8,6 +8,15 @@ import Dao.BD;
 public class EmpresaSQL {
 	private Connection conn = null;
 	
+	public EmpresaSQL() {
+		conn = BD.getConnection();
+		createTables();
+	}
+	
+	public void close() {
+		BD.close();
+	}
+	
 	private void createTables() {
 		String sql = null;
 		if (BD.typeDB.equals("sqlite")) {
