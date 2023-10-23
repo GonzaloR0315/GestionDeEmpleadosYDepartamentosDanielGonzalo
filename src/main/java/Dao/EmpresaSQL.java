@@ -11,7 +11,7 @@ public class EmpresaSQL {
 	
 	public EmpresaSQL() {
 		conn = BD.getConnection();
-		//createTables();
+		createTables();
 	}
 	
 	public void close() {
@@ -23,7 +23,7 @@ public class EmpresaSQL {
 	 * 
 	 * @throws SQLException
 	 */
-/*	private void createTables() {
+	private void createTables() {
 		String sql = null;
 		if (BD.typeDB.equals("sqlite")) {
 			sql = """
@@ -57,7 +57,7 @@ public class EmpresaSQL {
 								  nombre VARCHAR(255) NOT NULL,
 								  telefono VARCHAR(255) DEFAULT NULL,
 								  edad INT DEFAULT NULL,
-								  PRIMARY KEY (Idd)
+								  PRIMARY KEY (Id)
 								)
 					""";
 						
@@ -66,5 +66,5 @@ public class EmpresaSQL {
 			conn.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 		}
-	}*/
+	}
 }
