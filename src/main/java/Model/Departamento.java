@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class Departamento {
 	Integer id;
 	String nombre;
-	Empleado empleado;
+	Empleado jefe;
 }
