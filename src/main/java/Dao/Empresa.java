@@ -43,7 +43,7 @@ public class Empresa {
         }
     }
 	
-	/*public static void selectAllFromTable(Connection connection, String tableName) {
+	public static void selectAllFromTable(Connection connection, String tableName) {
         try {
             Statement statement = (Statement) connection.createStatement();
             String query = "SELECT * FROM " + tableName;
@@ -54,18 +54,18 @@ public class Empresa {
 	            	Empleado empleado = new Empleado(resultSet.getInt("id"),
 	            			resultSet.getString("nombre"),
 	            			resultSet.getDouble("salario"),
-	            			 (LocalDate)resultSet.getDate("nacido").toLocalDate(),
-	            			new Departamento().setNombre(resultSet.getString("depatamento")));
+	            			 (LocalDate)resultSet.getDate("nacido").toLocalDate(),new Departamento());
+                    empleado.getDepartamento().setNombre(resultSet.getString("departamento"));
 	            	Object objeto = empleado;
 	            	lista.add(objeto);
 	            }
             }
             else if( tableName == "Departamentos" ) {
             while (resultSet.next()) {
-                // Aquí puedes recuperar los datos de cada fila y procesarlos según tus necesidades.
-                // Ejemplo: String columna1 = resultSet.getString("nombre_columna1");
-                //         int columna2 = resultSet.getInt("nombre_columna2");
-                //         // Realiza las operaciones que desees con los datos.
+                Departamento departamento = new Departamento(resultSet.getInt("id"),resultSet.getString("nombre"),new Empleado());
+                departamento.getJefe().setNombre(resultSet.getString("jefe"));
+                Object objeto = departamento;
+                lista.add(objeto);
             }
             }
             resultSet.close();
@@ -73,7 +73,7 @@ public class Empresa {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 	
 	public static void selectIdFromTable(Connection connection, String tableName, int ID) {
         try {
