@@ -2,13 +2,13 @@ package Dao;
 
 import Model.Empleado;
 import Model.Departamento;
-
 import java.beans.Statement;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import Model.Departamento;
 
@@ -43,25 +43,37 @@ public class Empresa {
         }
     }
 	
-	public static void selectAllFromTable(Connection connection, String tableName) {
+	/*public static void selectAllFromTable(Connection connection, String tableName) {
         try {
             Statement statement = (Statement) connection.createStatement();
             String query = "SELECT * FROM " + tableName;
             ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
-
+            ArrayList<Object> lista = new ArrayList<Object>();
+            if( tableName == "Empleados" ) {
+	            while (resultSet.next()) {
+	            	Empleado empleado = new Empleado(resultSet.getInt("id"),
+	            			resultSet.getString("nombre"),
+	            			resultSet.getDouble("salario"),
+	            			 (LocalDate)resultSet.getDate("nacido").toLocalDate(),
+	            			new Departamento().setNombre(resultSet.getString("depatamento")));
+	            	Object objeto = empleado;
+	            	lista.add(objeto);
+	            }
+            }
+            else if( tableName == "Departamentos" ) {
             while (resultSet.next()) {
                 // Aquí puedes recuperar los datos de cada fila y procesarlos según tus necesidades.
                 // Ejemplo: String columna1 = resultSet.getString("nombre_columna1");
                 //         int columna2 = resultSet.getInt("nombre_columna2");
                 //         // Realiza las operaciones que desees con los datos.
             }
-
+            }
             resultSet.close();
             ((Connection) statement).close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 	
 	public static void selectIdFromTable(Connection connection, String tableName, int ID) {
         try {
