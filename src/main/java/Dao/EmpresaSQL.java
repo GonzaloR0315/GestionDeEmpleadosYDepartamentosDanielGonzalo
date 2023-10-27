@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import Dao.BD;
 import Model.Empleado;
 
+// todo : esto no se usa nunca habra que conectarlo
 public class EmpresaSQL {
 	private Connection conn = null;
 	
@@ -28,35 +29,35 @@ public class EmpresaSQL {
 		if (BD.typeDB.equals("sqlite")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS Empleados (
-							uuid CHAR(36) PRIMARY KEY,
+							id INTEGER PRIMARY KEY,
 							nombre STRING NOT NULL,
-							telefono STRING,
-							edad INTEGER
+							salario DOUBLE,
+							nacido DATE,
+							departamento_id INTEGER
 						)
 						
 						CREATE TABLE IF NOT EXISTS Departamentos (
-								Id int PRIMARY KEY,
+								Id INTEGER PRIMARY KEY,
 								nombre STRING NOT NULL,
-								telefono STRING,
-								edad INTEGER
+								jefe_id not null
 							)
 					""";
 		}
 		if (BD.typeDB.equals("mariadb")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS Empleados (
-						  uuid CHAR(36) PRIMARY KEY,
+						  uuid INT PRIMARY KEY,
 						  nombre VARCHAR(255) NOT NULL,
-						  telefono VARCHAR(255) DEFAULT NULL,
-						  edad INT DEFAULT NULL,
+						  salario DOUBLE DEFAULT NULL,
+						  nacido DATE,
+						  departamento_id INT,
 						  PRIMARY KEY (uuid)
 						)
 						
 						CREATE TABLE IF NOT EXISTS Departamentos (
 								  Id Int PRIMARY KEY,
 								  nombre VARCHAR(255) NOT NULL,
-								  telefono VARCHAR(255) DEFAULT NULL,
-								  edad INT DEFAULT NULL,
+								  jefe_id INT NOT NULL,
 								  PRIMARY KEY (Id)
 								)
 					""";

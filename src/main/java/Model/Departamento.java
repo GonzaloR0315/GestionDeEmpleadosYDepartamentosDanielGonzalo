@@ -1,14 +1,17 @@
 package Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
+@ToString
 public class Departamento {
+
 	Integer id;
+	@NonNull
 	String nombre;
+	@NonNull
 	Empleado jefe;
 }
