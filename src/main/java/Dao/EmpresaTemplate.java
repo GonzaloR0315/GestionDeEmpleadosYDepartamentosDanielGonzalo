@@ -2,7 +2,7 @@ package Dao;
 
 import Model.Empleado;
 import Model.Departamento;
-import java.sql.Statement;
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -96,9 +96,14 @@ public class EmpresaTemplate {
 	
 	public static Boolean eliminarFromTable(Connection connection, String tableNameDel, String tableNameNull, int ID) {
         try {
-            Statement statement = (Statement) connection.createStatement();
-            String query1 = "Update " + tableNameNull + " set " + tableNameDel.toLowerCase() + " = 'NULL' where " + tableNameDel.toLowerCase() +
-            				" = (SELECT nombre FROM " + tableNameDel + " where id = " + ID + ")"   ;
+            
+        	Statement statement = (Statement) connection.createStatement();
+        	String query1 = "";
+            if(tableNameNull.equalsIgnoreCase("empleados")) {
+	        	query1 = "Update " + tableNameNull + " set departamento = 'NULL' where departamento = (SELECT id FROM " + tableNameDel + " where jefe = " + ID + ")"   ;
+            }else {
+            	query1 = "Update " + tableNameNull + " set jefe = 'NULL' where jefe = (SELECT id FROM " + tableNameDel + " where departamento = " + ID + ")"   ;
+            }
             String query2 = "Delete * FROM " + tableNameDel + " where id = " + ID;
             ResultSet resultSet1 = ((java.sql.Statement) statement).executeQuery(query1);
             ResultSet resultSet2 = ((java.sql.Statement) statement).executeQuery(query2);
