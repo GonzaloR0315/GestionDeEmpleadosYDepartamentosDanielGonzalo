@@ -10,7 +10,6 @@ import SQL.BD;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-// todo : separar el BD y el EmpresaSQL a un paquete de base de datos.
 
 public class App {
 
@@ -99,8 +98,9 @@ public class App {
 						System.out.println("Atras...");
 						break;
 					}
-					// Todo : 					Empresa.UpdateDepartamento(BD.getConnection(),n1);
+								Empresa.updateDepartamentos(BD.getConnection(),mod);
 				}else{
+
 					lista=Empresa.selectAllFromTable(BD.getConnection(),"empleados");
 					for (Object element: lista) {
 						Empleado mostrar = (Empleado) element;
@@ -135,13 +135,18 @@ public class App {
 						System.out.println("Atras...");
 						break;
 					}
-					// Todo : 					Empresa.UpdateEmpleado(BD.getConnection(),n1);
+
+
+						Empresa.updateEmpleados(BD.getConnection(),mod);
 
 				}
 
 
 				break;
-				
+			case 3:
+				System.out.println("¿Quieres Eliminar (D)epartamento u (E)mpleado?");
+
+				break;
 
 
 		}
