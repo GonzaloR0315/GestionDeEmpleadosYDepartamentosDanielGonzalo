@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import Model.Empleado;
 
-// todo : esto no se usa nunca habra que conectarlo
 public class EmpresaSQL {
 	private Connection conn = null;
 	

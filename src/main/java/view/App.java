@@ -6,6 +6,7 @@ import IO.TecladoTemplate;
 import Model.Departamento;
 import Model.Empleado;
 import SQL.BD;
+import SQL.EmpresaSQL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class App {
 
     public static void main(String[] args) {
-        Empresa e = new Empresa();
+        EmpresaSQL e = new EmpresaSQL();
         System.out.println("1.Crear,2.Modificar,3.Eliminar,0.Salir");
         int option = TecladoTemplate.leerEntero("Introduce una de las opciones");
         switch (option) {
