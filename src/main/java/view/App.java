@@ -1,11 +1,11 @@
 package view;
 
-import Dao.BD;
 import Dao.Empresa;
 import IO.Teclado;
 import IO.TecladoTemplate;
 import Model.Departamento;
 import Model.Empleado;
+import SQL.BD;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

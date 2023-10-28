@@ -111,5 +111,33 @@ public class EmpresaTemplate {
             return false;
         }
     }
+	
+	public static Boolean updateEmpleados(Connection connection,Integer id, String nombre, Double salario, LocalDate nacido, Departamento departamento) {
+		try {
+			 Statement statement = (Statement) connection.createStatement();
+	         String query = "Update Empleados set nombre = " + nombre + ", salario = " + salario + ", nacido = " + nacido + ", departamento = " + departamento.getNombre() + " where id = " + id + ")";
+	         ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
+	         resultSet.close();
+	         ((Connection) statement).close();
+	         return true;
+	    } catch (SQLException e) {
+	         e.printStackTrace();
+	         return false;
+	    }
+	}
+	
+	public static Boolean updateDepartamentos(Connection connection,Integer id, String nombre, Empleado jefe) {
+		try {
+			 Statement statement = (Statement) connection.createStatement();
+	         String query = "Update Empleados set nombre = " + nombre + ", jefe = " + jefe.getNombre() + " where id = " + id + ")";
+	         ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
+	         resultSet.close();
+	         ((Connection) statement).close();
+	         return true;
+	    } catch (SQLException e) {
+	         e.printStackTrace();
+	         return false;
+	    }
+	}
 
 }

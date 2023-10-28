@@ -1,9 +1,8 @@
-package Dao;
+package SQL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import Dao.BD;
 import Model.Empleado;
 
 // todo : esto no se usa nunca habra que conectarlo
