@@ -2,7 +2,7 @@ package Dao;
 
 import Model.Empleado;
 import Model.Departamento;
-import java.beans.Statement;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
