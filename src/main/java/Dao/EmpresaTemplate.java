@@ -103,29 +103,32 @@ public class EmpresaTemplate {
         }
     }
 
-	
-	public static Boolean eliminarFromTable(Connection connection, String tableNameDel, String tableNameNull, int ID) {
+
+    public static Boolean eliminarFromTable(Connection connection, String tableNameDel, String tableNameNull, int ID) {
         try {
-            
-        	Statement statement = (Statement) connection.createStatement();
-        	String query1 = "";
-            if(tableNameNull.equalsIgnoreCase("empleados")) {
-	        	query1 = "Update " + tableNameNull + " set departamento = 'NULL' where departamento_id = (SELECT id FROM " + tableNameDel + " where jefe_id = " + ID + ")"   ;
-            }else {
-            	query1 = "Update " + tableNameNull + " set jefe_id = 'NULL' where jefe_id = (SELECT id FROM " + tableNameDel + " where departamento_id = " + ID + ")"   ;
+            Statement statement = connection.createStatement();
+
+            String query1 = "";
+            if (tableNameNull.equalsIgnoreCase("empleados")) {
+                query1 = "UPDATE " + tableNameNull + " SET nombre = 'NULL' WHERE departamento_id = (SELECT id FROM " + tableNameDel + " WHERE jefe_id = " + ID + ")";
+            } else {
+                query1 = "UPDATE " + tableNameNull + " SET jefe_id = 'NULL' WHERE jefe_id = (SELECT id FROM " + tableNameDel + " WHERE departamento_id = " + ID + ")";
             }
-            String query2 = "Delete * FROM " + tableNameDel + " where id = " + ID;
-            ResultSet resultSet1 = ((java.sql.Statement) statement).executeQuery(query1);
-            ResultSet resultSet2 = ((java.sql.Statement) statement).executeQuery(query2);
-            resultSet1.close();
-            resultSet2.close();
-            ((Connection) statement).close();
-            return true;
+
+            String query2 = "DELETE FROM " + tableNameDel + " WHERE id = " + ID;
+
+            int rowsUpdated1 = statement.executeUpdate(query1);
+            int rowsUpdated2 = statement.executeUpdate(query2);
+
+            statement.close();
+
+            return (rowsUpdated1 > 0 && rowsUpdated2 > 0);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
 
     public static Boolean updateEmpleado(Connection connection, Empleado empleado) {
         try {
