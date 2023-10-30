@@ -2,47 +2,57 @@ package Dao;
 
 import Model.Empleado;
 import Model.Departamento;
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class EmpresaTemplate {
-	
-	
 
-    public static Boolean insertEmpleado(Connection connection, Empleado empleado) {
+
+
+    public static boolean insertEmpleado(Connection connection, Empleado empleado) {
         try {
-            Statement statement = (Statement) connection.createStatement();
-            String query = "Insert INTO Empleados ( nombre, salario, nacido, departamento_id) VALUES (" + empleado.getNombre() + ", " + empleado.getSalario() + ", " + empleado.getNacido() + ", " + empleado.getDepartamento().getId() + ")";
-            ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
-            resultSet.close();
-            ((Connection) statement).close();
-            return true;
+            String query = "INSERT INTO Empleados (nombre, salario, nacido, departamento_id) VALUES (?, ?, ?, ?)";
+
+            // Usamos PreparedStatement en lugar de Statement
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, empleado.getNombre());
+            preparedStatement.setDouble(2, empleado.getSalario());
+            preparedStatement.setDate(3, Date.valueOf(empleado.getNacido()));
+            preparedStatement.setInt(4, empleado.getDepartamento().getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-	
-
-    public static Boolean insertDepartamento(Connection connection, Departamento departamento) {
+    public static boolean insertDepartamento(Connection connection, Departamento departamento) {
         try {
-            Statement statement = (Statement) connection.createStatement();
-            String query = "Insert INTO Departamentos ( nombre, jefe_id) VALUES (" + departamento.getNombre() + ", " + departamento.getJefe().getId() + ")";
-            ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
-            resultSet.close();
-            ((Connection) statement).close();
-            return true;
+            String query = "INSERT INTO Departamentos (nombre, jefe_id) VALUES (?, ?)";
+
+            // Usamos PreparedStatement en lugar de Statement
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, departamento.getNombre());
+            preparedStatement.setInt(2, departamento.getJefe().getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-	public static ArrayList<Object> selectAllFromTable(Connection connection, String tableName) {
+
+
+    public static ArrayList<Object> selectAllFromTable(Connection connection, String tableName) {
         ArrayList<Object> lista = new ArrayList<Object>();
         try {
             Statement statement = (Statement) connection.createStatement();
@@ -68,7 +78,7 @@ public class EmpresaTemplate {
             }
             }
             resultSet.close();
-            ((Connection) statement).close();
+         //   ((Connection) statement).close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,7 +112,7 @@ public class EmpresaTemplate {
             if(tableNameNull.equalsIgnoreCase("empleados")) {
 	        	query1 = "Update " + tableNameNull + " set departamento = 'NULL' where departamento_id = (SELECT id FROM " + tableNameDel + " where jefe_id = " + ID + ")"   ;
             }else {
-            	query1 = "Update " + tableNameNull + " set jefe = 'NULL' where jefe_id = (SELECT id FROM " + tableNameDel + " where departamento_id = " + ID + ")"   ;
+            	query1 = "Update " + tableNameNull + " set jefe_id = 'NULL' where jefe_id = (SELECT id FROM " + tableNameDel + " where departamento_id = " + ID + ")"   ;
             }
             String query2 = "Delete * FROM " + tableNameDel + " where id = " + ID;
             ResultSet resultSet1 = ((java.sql.Statement) statement).executeQuery(query1);
@@ -116,22 +126,51 @@ public class EmpresaTemplate {
             return false;
         }
     }
-	
-	public static Boolean updateEmpleados(Connection connection,Empleado empleado) {
-		try {
-			 Statement statement = (Statement) connection.createStatement();
-	         String query = "Update Empleados set nombre = " + empleado.getNombre() + ", salario = " + empleado.getSalario() + ", nacido = " + empleado.getNacido() + ", departamento_id = " + empleado.getDepartamento().getNombre() + " where id = " + empleado.getId() + ")";
-	         ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
-	         resultSet.close();
-	         ((Connection) statement).close();
-	         return true;
-	    } catch (SQLException e) {
-	         e.printStackTrace();
-	         return false;
-	    }
-	}
 
-	public static Boolean updateDepartamentos(Connection connection,Departamento departamento) {
+    public static Boolean updateEmpleado(Connection connection, Empleado empleado) {
+        try {
+            String query = "UPDATE Empleados SET nombre = ?, salario = ?, nacido = ?, departamento_id = ? WHERE id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, empleado.getNombre());
+
+            if (empleado.getSalario() != null) {
+                preparedStatement.setDouble(2, empleado.getSalario());
+            } else {
+                preparedStatement.setNull(2, java.sql.Types.DOUBLE);
+            }
+
+            if (empleado.getNacido() != null) {
+                preparedStatement.setDate(3, Date.valueOf(empleado.getNacido()));
+            } else {
+                preparedStatement.setNull(3, java.sql.Types.DATE);
+            }
+
+            if (empleado.getDepartamento() != null && empleado.getDepartamento().getId() != null) {
+                preparedStatement.setInt(4, empleado.getDepartamento().getId());
+            } else {
+                preparedStatement.setNull(4, java.sql.Types.INTEGER);
+            }
+
+            if (empleado.getId() != null) {
+                preparedStatement.setInt(5, empleado.getId());
+            } else {
+                preparedStatement.setNull(5, java.sql.Types.INTEGER);
+            }
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    public static Boolean updateDepartamentos(Connection connection,Departamento departamento) {
 		try {
 			 Statement statement = (Statement) connection.createStatement();
 	         String query = "Update Empleados set nombre = " + departamento.getNombre() + ", jefe_id = " + departamento.getJefe().getId() + " where id = " + departamento.getId() + ")";

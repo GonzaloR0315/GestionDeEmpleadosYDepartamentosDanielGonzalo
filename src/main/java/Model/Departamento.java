@@ -5,13 +5,15 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @ToString
 public class Departamento {
 
 	Integer id;
-	@NonNull
 	String nombre;
-	@NonNull
 	Empleado jefe;
+
+	public Departamento( String nombre, Empleado jefe) {
+		this.nombre = nombre;
+		this.jefe = jefe;
+	}
 }

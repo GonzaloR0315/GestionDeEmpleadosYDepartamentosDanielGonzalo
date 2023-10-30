@@ -10,13 +10,17 @@ import javax.management.ConstructorParameters;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@NoArgsConstructor
+
 public class Empleado {
-	private int id;
-	@NonNull
+	private Integer id;
 	private String nombre;
-	private double salario;
+	private Double salario;
 	LocalDate nacido;
-	@NonNull
 	Departamento departamento;
+
+	public Empleado( String nombre, Departamento departamento) {
+		this.nombre = nombre;
+		this.departamento = departamento;
+	}
+
 }

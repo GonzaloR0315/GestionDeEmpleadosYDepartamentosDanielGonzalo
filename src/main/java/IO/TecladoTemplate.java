@@ -62,6 +62,9 @@ public class TecladoTemplate {
                 resultado = LocalDate.parse(cadena, formatter);
             } catch (Exception e) {
                 e.getStackTrace();
+                correcto = false;
+            }finally {
+                correcto=true;
             }
 
         } while (!correcto);

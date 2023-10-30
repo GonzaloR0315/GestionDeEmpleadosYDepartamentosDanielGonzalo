@@ -32,16 +32,15 @@ public class EmpresaSQL {
 							salario DOUBLE,
 							nacido DATE,
 							departamento_id INTEGER
-						)
+						);
 						
 						CREATE TABLE IF NOT EXISTS Departamentos (
 								Id INTEGER PRIMARY KEY,
 								nombre STRING NOT NULL,
-								jefe_id not null
+								jefe_id INTEGER
 							)
 					""";
-		}
-		if (BD.typeDB.equals("mariadb")) {
+		} else if (BD.typeDB.equals("mariadb")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS Empleados (
 						  uuid INT PRIMARY KEY,
@@ -50,18 +49,20 @@ public class EmpresaSQL {
 						  nacido DATE,
 						  departamento_id INT,
 						  PRIMARY KEY (uuid)
-						)
+						);
 						
 						CREATE TABLE IF NOT EXISTS Departamentos (
 								  Id Int PRIMARY KEY,
 								  nombre VARCHAR(255) NOT NULL,
-								  jefe_id INT NOT NULL,
+								  jefe_id INT ,
 								  PRIMARY KEY (Id)
 								)
 					""";
 						
 		}
 		try {
+
+
 			conn.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
 		}

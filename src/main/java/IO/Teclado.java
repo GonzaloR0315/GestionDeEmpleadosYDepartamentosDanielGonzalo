@@ -17,7 +17,7 @@ public class Teclado extends TecladoTemplate{
             System.out.print(mensaje);
 
                 int test = TecladoTemplate.leerEntero(mensaje);
-                if (test > min && max <= test) {
+                if (test >= min && max >= test) {
                     resultado = test;
                 } else {
                     System.out.println("Numero fuera de rango" + min + "-" + max);

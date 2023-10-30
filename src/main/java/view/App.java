@@ -16,7 +16,7 @@ public class App {
 
     public static void main(String[] args) {
         EmpresaSQL e = new EmpresaSQL();
-        System.out.println("1.Crear,2.Modificar,3.Eliminar,0.Salir");
+        System.out.println("1.Crear,2.Modificar,3.Eliminar,4.Mostrar,0.Salir");
         int option = TecladoTemplate.leerEntero("Introduce una de las opciones");
         switch (option) {
             case 1:
@@ -34,8 +34,10 @@ public class App {
                         Empleado mostrar = (Empleado) element;
                         System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                     }
-                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al empleado que desees que sea jefe de departamento", 0, lista.size());
-                    Departamento n1 = new Departamento(nombre, (Empleado) lista.get(seleccionaId));
+                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al empleado que desees que sea jefe de departamento", 0, lista.size()-1);
+                    Departamento n1 = new Departamento();
+                    n1.setNombre(nombre);
+                    n1.setJefe((Empleado) lista.get(seleccionaId));
                     Empresa.insertDepartamento(BD.getConnection(), n1);
                 } else if (create.equalsIgnoreCase("e")) {
                     lista = Empresa.selectAllFromTable(BD.getConnection(), "empleados");
@@ -51,10 +53,12 @@ public class App {
                         Departamento mostrar = (Departamento) element;
                         System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                     }
-                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al departamento al que se quiera asignar el empleado", 0, lista.size());
-                    Empleado n1 = new Empleado(nombre, (Departamento) lista.get(seleccionaId));
+                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al departamento al que se quiera asignar el empleado", 0, lista.size()-1);
+                    Empleado n1 = new Empleado();
+                    n1.setNombre(nombre);
                     n1.setSalario(salario);
                     n1.setNacido(nacimiento);
+                    n1.setDepartamento((Departamento) lista.get(seleccionaId));
                     Empresa.insertEmpleado(BD.getConnection(), n1);
 
 
@@ -68,13 +72,13 @@ public class App {
 
 
                 String modifi = Teclado.leerString("¿Quieres Modificar (D)epartamento u (E)mpleado?");
-                if (modifi.equals("D")) {
+                if (modifi.equalsIgnoreCase("D")) {
                     lista = Empresa.selectAllFromTable(BD.getConnection(), "departamentos");
                     for (Object element : lista) {
                         Departamento mostrar = (Departamento) element;
                         System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                     }
-                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al departamento que desees Modificar", 0, lista.size());
+                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al departamento que desees Modificar", 0, lista.size()-1);
                     Departamento mod = (Departamento) lista.get(seleccionaId);
                     System.out.println(mod.toString());
                     String campo = Teclado.leerString("Introduce el elemento a modificar[(N)ombre,(J)efe]");
@@ -89,7 +93,7 @@ public class App {
                             Empleado mostrar = (Empleado) element;
                             System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                         }
-                        seleccionaId = Teclado.leerEntero("Introduce el numero asociado al empleado que desees que sea jefe de departamento", 0, lista.size());
+                        seleccionaId = Teclado.leerEntero("Introduce el numero asociado al empleado que desees que sea jefe de departamento", 0, lista.size()-1);
 
                         mod.setJefe((Empleado) lista.get(seleccionaId));
                     } else {
@@ -104,7 +108,7 @@ public class App {
                         Empleado mostrar = (Empleado) element;
                         System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                     }
-                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al Empleado que desees Modificar", 0, lista.size());
+                    int seleccionaId = Teclado.leerEntero("Introduce el numero asociado al Empleado que desees Modificar", 0, lista.size()-1);
                     Empleado mod = (Empleado) lista.get(seleccionaId);
                     System.out.println(mod.toString());
                     String campo = Teclado.leerString("Introduce el elemento a modificar(Nombre,Salario,Nacimineto,Departamento)");
@@ -114,7 +118,7 @@ public class App {
                         mod.setNombre(modificar);
                     } else if (campo.equalsIgnoreCase("departamento") || campo.equalsIgnoreCase("d")) {
                         System.out.println(mod.getDepartamento());
-                        seleccionaId = Teclado.leerEntero("Introduce el numero asociado al  departamento que desees remplazar", 0, lista.size());
+                        seleccionaId = Teclado.leerEntero("Introduce el numero asociado al  departamento que desees remplazar", 0, lista.size()-1);
                         lista = Empresa.selectAllFromTable(BD.getConnection(), "departamentos");
                         for (Object element : lista) {
                             Departamento mostrar = (Departamento) element;
@@ -135,7 +139,7 @@ public class App {
                     }
 
 
-                    Empresa.updateEmpleados(BD.getConnection(), mod);
+                    Empresa.updateEmpleado(BD.getConnection(), mod);
 
                 }
 
@@ -149,7 +153,7 @@ public class App {
                         Departamento mostrar = (Departamento) element;
                         System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                     }
-                    Departamento n1 = (Departamento) lista.get(Teclado.leerEntero("Introduce el numero asociado al Departamento que desees que sea jefe de departamento", 0, lista.size()));
+                    Departamento n1 = (Departamento) lista.get(Teclado.leerEntero("Introduce el numero asociado al Departamento que desees que sea jefe de departamento", 0, lista.size()-1));
                     Empresa.eliminarFromTable(BD.getConnection(), "departamentos", "empleados", n1.getId());
                 } else if (eli.equalsIgnoreCase("e")) {
                     lista = Empresa.selectAllFromTable(BD.getConnection(), "empleados");
@@ -157,11 +161,31 @@ public class App {
                         Empleado mostrar = (Empleado) element;
                         System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
                     }
-                    Empleado n1 = (Empleado) lista.get(Teclado.leerEntero("Introduce el numero asociado al Empleado que desees que sea jefe de departamento", 0, lista.size()));
+                    Empleado n1 = (Empleado) lista.get(Teclado.leerEntero("Introduce el numero asociado al Empleado que desees que sea jefe de departamento", 0, lista.size() - 1));
                     Empresa.eliminarFromTable(BD.getConnection(), "empleados", "departamentos", n1.getId());
-
+                }
                     break;
+                    case 4:
+                        String most  = Teclado.leerString("¿Quieres Mostrar (D)epartamento u (E)mpleado?");;
+                        if(most.equalsIgnoreCase("D")){
+                            lista = Empresa.selectAllFromTable(BD.getConnection(), "departamentos");
+                            for (Object element : lista) {
+                                Departamento mostrar = (Departamento) element;
+                                System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
+                            }
+                        } else if (most.equalsIgnoreCase("e")) {
+                            lista = Empresa.selectAllFromTable(BD.getConnection(), "empleados");
+                            for (Object element : lista) {
+                                Empleado mostrar = (Empleado) element;
+                                System.out.println(lista.indexOf(element) + ". " + mostrar.toString());
+                            }
+                        }
+                        break;
+                        }
+
+
                 }
         }
-    }
-}
+
+
+
