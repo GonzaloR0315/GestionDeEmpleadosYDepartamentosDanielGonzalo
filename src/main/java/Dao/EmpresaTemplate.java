@@ -171,17 +171,21 @@ public class EmpresaTemplate {
 
 
     public static Boolean updateDepartamentos(Connection connection,Departamento departamento) {
-		try {
-			 Statement statement = (Statement) connection.createStatement();
-	         String query = "Update Empleados set nombre = " + departamento.getNombre() + ", jefe_id = " + departamento.getJefe().getId() + " where id = " + departamento.getId() + ")";
-	         ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
-	         resultSet.close();
-	         ((Connection) statement).close();
-	         return true;
-	    } catch (SQLException e) {
-	         e.printStackTrace();
-	         return false;
-	    }
+        try {
+            String query = "UPDATE Departamentos SET nombre = ? WHERE Id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, departamento.getNombre());
+            preparedStatement.setInt(2, departamento.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate(); // Utiliza executeUpdate
+            preparedStatement.close();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
