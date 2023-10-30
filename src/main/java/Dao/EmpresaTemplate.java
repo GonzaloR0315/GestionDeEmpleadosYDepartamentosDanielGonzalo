@@ -16,7 +16,7 @@ public class EmpresaTemplate {
     public static Boolean insertEmpleado(Connection connection, Empleado empleado) {
         try {
             Statement statement = (Statement) connection.createStatement();
-            String query = "Insert INTO Empleados ( nombre, salario, nacido, departamento) VALUES (" + empleado.getNombre() + ", " + empleado.getSalario() + ", " + empleado.getNacido() + ", " + empleado.getDepartamento().getId() + ")";
+            String query = "Insert INTO Empleados ( nombre, salario, nacido, departamento_id) VALUES (" + empleado.getNombre() + ", " + empleado.getSalario() + ", " + empleado.getNacido() + ", " + empleado.getDepartamento().getId() + ")";
             ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
             resultSet.close();
             ((Connection) statement).close();
@@ -31,7 +31,7 @@ public class EmpresaTemplate {
     public static Boolean insertDepartamento(Connection connection, Departamento departamento) {
         try {
             Statement statement = (Statement) connection.createStatement();
-            String query = "Insert INTO Departamentos ( nombre, jefe) VALUES (" + departamento.getNombre() + ", " + departamento.getJefe().getId() + ")";
+            String query = "Insert INTO Departamentos ( nombre, jefe_id) VALUES (" + departamento.getNombre() + ", " + departamento.getJefe().getId() + ")";
             ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
             resultSet.close();
             ((Connection) statement).close();
@@ -54,7 +54,7 @@ public class EmpresaTemplate {
 	            			resultSet.getString("nombre"),
 	            			resultSet.getDouble("salario"),
 	            			 (LocalDate)resultSet.getDate("nacido").toLocalDate(),new Departamento());
-                    empleado.getDepartamento().setNombre(resultSet.getString("departamento"));
+                    empleado.getDepartamento().setNombre(resultSet.getString("departamento_id"));
 	            	Object objeto = empleado;
 	            	lista.add(objeto);
 	            }
@@ -62,7 +62,7 @@ public class EmpresaTemplate {
             else if( tableName.equalsIgnoreCase( "Departamentos") ) {
             while (resultSet.next()) {
                 Departamento departamento = new Departamento(resultSet.getInt("id"),resultSet.getString("nombre"),new Empleado());
-                departamento.getJefe().setNombre(resultSet.getString("jefe"));
+                departamento.getJefe().setNombre(resultSet.getString("jefe_id"));
                 Object objeto = departamento;
                 lista.add(objeto);
             }
@@ -100,9 +100,9 @@ public class EmpresaTemplate {
         	Statement statement = (Statement) connection.createStatement();
         	String query1 = "";
             if(tableNameNull.equalsIgnoreCase("empleados")) {
-	        	query1 = "Update " + tableNameNull + " set departamento = 'NULL' where departamento = (SELECT id FROM " + tableNameDel + " where jefe = " + ID + ")"   ;
+	        	query1 = "Update " + tableNameNull + " set departamento = 'NULL' where departamento_id = (SELECT id FROM " + tableNameDel + " where jefe_id = " + ID + ")"   ;
             }else {
-            	query1 = "Update " + tableNameNull + " set jefe = 'NULL' where jefe = (SELECT id FROM " + tableNameDel + " where departamento = " + ID + ")"   ;
+            	query1 = "Update " + tableNameNull + " set jefe = 'NULL' where jefe_id = (SELECT id FROM " + tableNameDel + " where departamento_id = " + ID + ")"   ;
             }
             String query2 = "Delete * FROM " + tableNameDel + " where id = " + ID;
             ResultSet resultSet1 = ((java.sql.Statement) statement).executeQuery(query1);
@@ -120,7 +120,7 @@ public class EmpresaTemplate {
 	public static Boolean updateEmpleados(Connection connection,Empleado empleado) {
 		try {
 			 Statement statement = (Statement) connection.createStatement();
-	         String query = "Update Empleados set nombre = " + empleado.getNombre() + ", salario = " + empleado.getSalario() + ", nacido = " + empleado.getNacido() + ", departamento = " + empleado.getDepartamento().getNombre() + " where id = " + empleado.getId() + ")";
+	         String query = "Update Empleados set nombre = " + empleado.getNombre() + ", salario = " + empleado.getSalario() + ", nacido = " + empleado.getNacido() + ", departamento_id = " + empleado.getDepartamento().getNombre() + " where id = " + empleado.getId() + ")";
 	         ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
 	         resultSet.close();
 	         ((Connection) statement).close();
@@ -134,7 +134,7 @@ public class EmpresaTemplate {
 	public static Boolean updateDepartamentos(Connection connection,Departamento departamento) {
 		try {
 			 Statement statement = (Statement) connection.createStatement();
-	         String query = "Update Empleados set nombre = " + departamento.getNombre() + ", jefe = " + departamento.getJefe().getId() + " where id = " + departamento.getId() + ")";
+	         String query = "Update Empleados set nombre = " + departamento.getNombre() + ", jefe_id = " + departamento.getJefe().getId() + " where id = " + departamento.getId() + ")";
 	         ResultSet resultSet = ((java.sql.Statement) statement).executeQuery(query);
 	         resultSet.close();
 	         ((Connection) statement).close();
